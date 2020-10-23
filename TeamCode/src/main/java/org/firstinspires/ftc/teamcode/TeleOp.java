@@ -13,7 +13,9 @@ public class TeleOp extends LinearOpMode {
         setup();
         waitForStart();
         while(opModeIsActive()){
-
+             telemetry.addData("Joystick x",gamepad1.left_stick_x);
+             telemetry.addData("Joystick y", gamepad1.left_stick_y);
+             telemetry.update();
         }
     }
     public void setup(){
