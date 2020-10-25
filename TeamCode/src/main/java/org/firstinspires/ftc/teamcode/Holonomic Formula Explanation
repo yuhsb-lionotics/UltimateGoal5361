@@ -1,0 +1,65 @@
+
+
+This document explains how and why to use certain formulas to control a robot with holonomic wheels.
+ This year, our robot has an omniwheel at each corner at a 45 degree angle. Everything in this
+ document would apply identically to mecanum wheels, and similarly to a wheel configuration with one
+ wheel at the center of each edge, but rotated 45 degrees.
+
+The robot is rigid, and therefore, it can only move in a combination of rigid motions: translation,
+ rotation, and reflection. Although 13475's robot is bound to undergo a reflection during the
+ competition, that would never happen to 5361. Therefore, the robot has three degrees of freedom:
+ two dimensions of translation (x and y) and one dimension of rotation (z).
+
+This means that in almost all cases, the motion of any three omni/mecanum wheels of a robot
+ completely determines its motion. The robot could have only three omniwheels, like this: |  --  |.
+ This would be simple to code, but those three wheels would not be able to hold up the robot. The
+ three omniwheels could have this setup:
+     __
+
+ \       /
+ but that would be incredibly difficult to code and would not fit well on a square robot.
+
+Therefore, we use a symmetrical four-wheeled configuration. However, this adds a complication: given
+ the speeds of three of the wheels, there is only one possible speed the fourth omniwheel can move
+ such that none of the wheels slip. For now, let's assume we don't want any of the wheels to slip.
+
+*** MOVEMENT WITHOUT SLIPPING ***
+
+The robot has three degrees of freedom: front/back movement, right/left movement, and rotation. To
+do a combination of them at once, we calculate how to do each one separately, then add together the
+results for each wheel. (To see why this works, imagine your point of view rotating with the robot,
+but not moving. The robot now seems to be strafing without rotating. Now going back to a stationary
+point of view, just add the values for a pure rotation. So we can add the values for a translation
+and a rotation to get any movement. Same logic for adding vertical and horizontal motion.)
+
+The robot is set up like this, where positive values go forward (up):
+/FL  FR\
+
+\BL  BR/
+
+The power for each wheel is given by:
+powerFL = forward + right + rotateClockwise
+powerFR = forward - right - rotateClockwise
+powerBR = forward + right - rotateClockwise
+powerBL = forward - right + rotateClockwise
+
+We can combine these equations to give:
+powerFL + powerFR = powerBL + powerBR.
+This means that for the robot not to slip, it has to have a consistent forward/backward speed.
+There's nothing special about the forward direction. We can rearrange the above equation as
+powerFL - powerBL = powerBR - powerFR.
+This means it has a consistent right/left speed. Or,
+powerFL - powerBR = powerBL - powerFR,
+meaning it has a consistent rotational speed. Although these three equations seem to be saying
+different things, they are all equivalent.
+
+*** LIMITATIONS OF MOTION ***
+
+For low speeds, the equation (in three version) above works fine. However, if we want the robot to
+go quickly, we run into a problem. The power set to any motor must be between 1 and -1. If the
+equation tells us to move a motor faster than that, we have two options: we can either slow all the
+motors down proportionally, or we can just move that motor at the maximum speed and leave everything
+else alone. This is a potentially important tradeoff between speed and consistency, since at least
+one of the wheels must slip if the equation is not satisfied.
+
+*** LIMITATIONS OF THE GAMEPAD ***
