@@ -1,4 +1,6 @@
-Title/Author
+Explanation of Formulas for Holonomic Wheel Setups
+
+by Emmett Weisz on behalf of MTA Lionotics (FTC teams 5361 and 13475)
 
 ***INTRO***
 //explain what holonomic means
@@ -14,8 +16,15 @@ The robot is rigid, and therefore, it can only move in a combination of rigid mo
 
 This means that in almost all cases, the motion of any three omni/mecanum wheels of a robot
  completely determines its motion. The robot could theoretically have only three omniwheels, like
- this: |  --  |, but that configuration would not hold up the robot without additional wheels.
- However, there is a very similar holonomic setup with five omniwheels that is the simplest to code:
+ this:
+      __
+
+  \       /
+  but that would be incredibly difficult to code and would not fit well on a square robot.
+
+ The wheels could be set up like this |  --  |, but that configuration would not hold up the robot
+ without additional wheels. However, there is a very similar holonomic setup with five omniwheels
+ that is the simplest holonomic setup to code:
 
  |      |
     --
@@ -29,10 +38,7 @@ This means that in almost all cases, the motion of any three omni/mecanum wheels
  center wheel takes up extra space.
 
   The three omniwheels could theoretically have this setup:
-     __
 
- \       /
- but that would be incredibly difficult to code and would not fit well on a square robot.
 
 Therefore, we often use a symmetrical four-wheeled configuration. However, this adds a complication:
  given the speeds of three of the wheels, there is only one possible speed the fourth omniwheel can
