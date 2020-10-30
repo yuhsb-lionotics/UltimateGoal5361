@@ -67,8 +67,11 @@ public class DriveTrain extends LinearOpMode {
         strafe(-power, power);
     }
 
+    //Add two more parameters, so there's one for each wheel. Consider making private and allow
+    //access only through a methods for strafing vertically, horizontally, or rotating about
+    //the center of the robot.
     protected void encoderDrive(double speed,
-                                double leftInches, double rightInches, double strafeInches,
+                                double leftInches, double rightInches,
                                 double timeoutS) { // middle inputs are how many inches to travel
         int newFRTarget;
         int newFLTarget;
@@ -110,7 +113,7 @@ public class DriveTrain extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    ((fr.isBusy() && fl.isBusy() && bl.isBusy() && br.isBusy()))) {
+                    (fr.isBusy() && fl.isBusy() && bl.isBusy() && br.isBusy()) ) {
 
                 // Display it for the driver.
                 /* telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
