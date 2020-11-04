@@ -11,10 +11,6 @@ This document explains how and why to use certain formulas to control a robot wi
 
  |     |, which cannot move side to side.
 
- This year, our robot has an omniwheel at each corner at a 45 degree angle. Everything in this
- document would apply identically to mecanum wheels, and similarly to a wheel configuration with one
- wheel at the center of each edge, but rotated 45 degrees.
-
 The robot is rigid, and therefore, it can only move in a combination of rigid motions: translation,
  rotation, and reflection. Although 13475's robot is bound to undergo a reflection during the
  competition, that would never happen to 5361. Therefore, the robot has three degrees of freedom:
@@ -43,10 +39,11 @@ This means that in almost all cases, the motion of any three omni/mecanum wheels
  wheel). This avoids many of the problems of a symmetrical four-wheeled holonomic system, but the
  center wheel takes up extra space.
 
-Therefore, we often use a symmetrical four-wheeled configuration. However, this adds a complication:
- given the speeds of three of the wheels, there is only one possible speed the fourth omniwheel can
- move such that none of the wheels slip. For now, let's assume we don't want any of the wheels to
- slip.
+Therefore, we often use a symmetrical four-wheeled configuration. This setup is identical to mecanum
+ wheels, and similar to a wheel configuration with one wheel at the center of each edge, but rotated
+ 45 degrees.However, this adds a complication: given the speeds of three of the wheels, there is
+ only one possible speed the fourth omniwheel can move such that none of the wheels slip. For now,
+ let's assume we don't want any of the wheels to slip.
 
 *** MOVEMENT WITHOUT SLIPPING ***
 
