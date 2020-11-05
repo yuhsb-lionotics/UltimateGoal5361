@@ -2,12 +2,14 @@ Explanation of Formulas for Holonomic Wheel Setups
 
 by Emmett Weisz on behalf of MTA Lionotics (FTC teams 5361 and 13475)
 
-***INTRO***
-//explain what holonomic means
+*** INTRO ***
+
 This document explains how and why to use certain formulas to control a robot with holonomic wheels.
- This year, our robot has an omniwheel at each corner at a 45 degree angle. Everything in this
- document would apply identically to mecanum wheels, and similarly to a wheel configuration with one
- wheel at the center of each edge, but rotated 45 degrees.
+ A holonomic wheel setup is one that allows the robot to move in any direction, as opposed to
+ this setup:
+ |     |
+
+ |     |, which cannot move side to side.
 
 The robot is rigid, and therefore, it can only move in a combination of rigid motions: translation,
  rotation, and reflection. Although 13475's robot is bound to undergo a reflection during the
@@ -17,9 +19,9 @@ The robot is rigid, and therefore, it can only move in a combination of rigid mo
 This means that in almost all cases, the motion of any three omni/mecanum wheels of a robot
  completely determines its motion. The robot could theoretically have only three omniwheels, like
  this:
-      __
+     __
 
-  \       /
+  \      /
   but that would be incredibly difficult to code and would not fit well on a square robot.
 
  The wheels could be set up like this |  --  |, but that configuration would not hold up the robot
@@ -37,13 +39,11 @@ This means that in almost all cases, the motion of any three omni/mecanum wheels
  wheel). This avoids many of the problems of a symmetrical four-wheeled holonomic system, but the
  center wheel takes up extra space.
 
-  The three omniwheels could theoretically have this setup:
-
-
-Therefore, we often use a symmetrical four-wheeled configuration. However, this adds a complication:
- given the speeds of three of the wheels, there is only one possible speed the fourth omniwheel can
- move such that none of the wheels slip. For now, let's assume we don't want any of the wheels to
- slip.
+Therefore, we often use a symmetrical four-wheeled configuration. This setup is identical to mecanum
+ wheels, and similar to a wheel configuration with one wheel at the center of each edge, but rotated
+ 45 degrees.However, this adds a complication: given the speeds of three of the wheels, there is
+ only one possible speed the fourth omniwheel can move such that none of the wheels slip. For now,
+ let's assume we don't want any of the wheels to slip.
 
 *** MOVEMENT WITHOUT SLIPPING ***
 
@@ -88,4 +88,24 @@ motors down proportionally, or we can just move that motor at the maximum speed 
 else alone. This is a potentially important tradeoff between speed and consistency, since at least
 one of the wheels must slip if the equation is not satisfied.
 
+For example, what happens if we want to rotate the robot, pivoting about one of the wheels, say BR?
+If we follow the equation for movement without slipping, the power for BR will be 0, FL will be set
+to full power, and FR and BL will be set to half power. What will happen if we set FR and BL to full
+power? Will it go slightly faster, twice as fast, or no faster at all? Will the slipping of the
+wheels ruin the consistency? Or will the wheels have such good traction that they don't slip at all,
+but push back against the motors?
+
 *** LIMITATIONS OF THE GAMEPAD ***
+
+When graphing the possible values of the gamepad, they form a regular octagon with minimum radius 1.
+The center of the octagon is (0,0). Ignore rotation of the robot for the moment. The possible values
+for forwardLeftPower and forwardRightPower form a square. Every point on the octagon must correspond
+to a point on the square. So, either the octagon does not cover the square (meaning there will be
+some velocities that cannot be reached with the gamepad, even though they are possible), or the
+octagon is distorted to match the square. Choosing between these two options is another tradeoff
+between speed and precision. However, if we don't want to be able to move as fast as possible, we
+can make the "octagon" smaller than the square so that it fits inside, and the outer edges of the
+square corresponding to faster speeds will not be covered.
+
+*** ANOTHER APPROACH ***
+

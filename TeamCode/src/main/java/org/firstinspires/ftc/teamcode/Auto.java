@@ -3,14 +3,21 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "autonomous")
-public class Auto extends LinearOpMode {
-
-    private DriveTrain driveTrain = new DriveTrain();
+@Autonomous(name = "blue autonomous")
+public class Auto extends DriveTrain {
 
     @Override
     public void runOpMode() {
-
+        setup();
+        telemetry.addData("Status:","Initialized");
+        telemetry.update();
+        waitForStart();
+        telemetry.addData("Status:", "Running");
+        telemetry.update();
+        //driving commands here
+    }
+    private void setup(){
+        driveTrainSetup();
     }
 }
 
