@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 public class DriveTrain extends LinearOpMode {
     protected DcMotor fl,bl,fr,br;
@@ -67,11 +68,22 @@ public class DriveTrain extends LinearOpMode {
         strafe(-power, power);
     }
 
-    //Add two more parameters, so there's one for each wheel. Consider making private and allow
-    //access only through a methods for strafing vertically, horizontally, or rotating about
-    //the center of the robot.
-    protected void encoderDrive(double speed,
-                                double leftInches, double rightInches,
+    public void tankControl(double maxPower) { // 0 < maxPower <= 1
+        double leftPower = -gamepad1.left_stick_y * maxPower;
+        double rightPower = -gamepad1.right_stick_y * maxPower;
+        double strafePower = (gamepad1.right_trigger - gamepad1.left_trigger) * maxPower; //positive is to the right
+        
+        double strafePowerLimit = Math.min(1 - Math.abs(rightPower) , 1 - Math.abs(leftPower));
+        strafePower = Range.clip(strafePower, -strafePowerLimit, strafePowerLimit);
+
+        fl.setPower(leftPower  + strafePower);
+        bl.setPower(leftPower  - strafePower);
+        fr.setPower(rightPower - strafePower);
+        br.setPower(rightPower + strafePower);
+    }
+
+    protected void encoderDrive(double powerFR, double powerFL, double powerBR, double powerBL,
+                                double maxInches, //how many inches a wheel at full power should go
                                 double timeoutS) { // middle inputs are how many inches to travel
         int newFRTarget;
         int newFLTarget;
@@ -82,10 +94,10 @@ public class DriveTrain extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFRTarget = fr.getCurrentPosition()     + (int) (rightInches   * COUNTS_PER_INCH);
-            newFLTarget = fl.getCurrentPosition()     + (int) (leftInches  * COUNTS_PER_INCH);
-            newBLTarget = bl.getCurrentPosition()     + (int) (leftInches   * COUNTS_PER_INCH);
-            newBRTarget = br.getCurrentPosition()     + (int) (rightInches  * COUNTS_PER_INCH);
+            newFRTarget = fr.getCurrentPosition()     + (int) (powerFR*maxInches * COUNTS_PER_INCH);
+            newFLTarget = fl.getCurrentPosition()     + (int) (powerFL*maxInches * COUNTS_PER_INCH);
+            newBLTarget = bl.getCurrentPosition()     + (int) (powerBL*maxInches * COUNTS_PER_INCH);
+            newBRTarget = br.getCurrentPosition()     + (int) (powerBR*maxInches * COUNTS_PER_INCH);
 
             fr.setTargetPosition(newFRTarget);
             fl.setTargetPosition(newFLTarget);
@@ -100,10 +112,10 @@ public class DriveTrain extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            fr.setPower(Math.abs(speed));
-            fl.setPower(Math.abs(speed));
-            bl.setPower(Math.abs(speed));
-            br.setPower(Math.abs(speed));
+            fr.setPower(Math.abs(powerFR));
+            fl.setPower(Math.abs(powerBL));
+            bl.setPower(Math.abs(powerBL));
+            br.setPower(Math.abs(powerBR));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
