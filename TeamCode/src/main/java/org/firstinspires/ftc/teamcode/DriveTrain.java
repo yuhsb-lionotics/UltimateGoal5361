@@ -76,15 +76,27 @@ public class DriveTrain extends LinearOpMode {
         double strafePowerLimit = Math.min(1 - Math.abs(rightPower) , 1 - Math.abs(leftPower));
         strafePower = Range.clip(strafePower, -strafePowerLimit, strafePowerLimit);
 
+        // This will set each motor to a power between -1 and +1 such that the equation for
+        // holonomic wheels works.
         fl.setPower(leftPower  + strafePower);
         bl.setPower(leftPower  - strafePower);
         fr.setPower(rightPower - strafePower);
         br.setPower(rightPower + strafePower);
     }
-
+    public void encoderStrafe(double maxPower, //0 <= maxPower <= 1
+                              double forwardLeftInches, double forwardRightInches, // + or -
+                              double timeoutS) {
+        double largestInches = Math.max(Math.abs(forwardLeftInches), Math.abs(forwardRightInches));
+        double forwardLeftPower  = maxPower * forwardLeftInches  / largestInches;
+        double forwardRightPower = maxPower * forwardRightInches / largestInches;
+        encoderDrive(forwardLeftPower, forwardRightPower, forwardRightPower, forwardLeftPower, largestInches/maxPower, timeoutS);
+    }
+    public void encoderDriveForward(double power, double inches, double timeoutS) {
+        encoderStrafe(power, inches/Math.sqrt(2), inches/Math.sqrt(2), timeoutS);
+    }
     protected void encoderDrive(double powerFR, double powerFL, double powerBR, double powerBL,
-                                double maxInches, //how many inches a wheel at full power should go
-                                double timeoutS) { // middle inputs are how many inches to travel
+                                double maxInches, // >0; how many inches a wheel at full power should go
+                                double timeoutS) {
         int newFRTarget;
         int newFLTarget;
         int newBLTarget;
