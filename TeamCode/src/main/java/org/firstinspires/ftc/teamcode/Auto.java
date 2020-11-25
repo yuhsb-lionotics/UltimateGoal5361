@@ -34,14 +34,15 @@ public class Auto extends DriveTrain {
         conveyorBelt.setDirection(DcMotorSimple.Direction.FORWARD);
         arm.setDirection(DcMotor.Direction.FORWARD);
     }
+    public void flRotate(double power){
+        fr.setPower(-power/2);
+        bl.setPower(power/2);
+        br.setPower(-power);
+        sleep(10000);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
+        }
 }
 
-    //public void frrotate(double power){
-    //    fr.setPower(power/2);
-    //    bl.setPower(power/2);
-    //    br.setPower(-power);
-    //    sleep(10000);
-    //    fr.setPower(0);
-    //    bl.setPower(0);
-    //    br.setPower(0);
-    //    }
+
