@@ -31,20 +31,20 @@ public class DriveTrain extends LinearOpMode {
             fr = hardwareMap.dcMotor.get("Fr");
             br = hardwareMap.dcMotor.get("Br");
 
-            //fl.setDirection(DcMotor.Direction.FORWARD);
-            //bl.setDirection(DcMotor.Direction.FORWARD);
-            //fr.setDirection(DcMotor.Direction.FORWARD);
-            //br.setDirection(DcMotor.Direction.FORWARD);
+            fl.setDirection(DcMotor.Direction.REVERSE);
+            bl.setDirection(DcMotor.Direction.REVERSE);
+            fr.setDirection(DcMotor.Direction.FORWARD);
+            br.setDirection(DcMotor.Direction.FORWARD);
         } else {
             fr = hardwareMap.dcMotor.get("Fl");
             br = hardwareMap.dcMotor.get("Bl");
             fl = hardwareMap.dcMotor.get("Fr");
             bl = hardwareMap.dcMotor.get("Br");
 
-            //fr.setDirection(DcMotor.Direction.FORWARD);
-            //br.setDirection(DcMotor.Direction.FORWARD);
-            //fl.setDirection(DcMotor.Direction.FORWARD);
-            //bl.setDirection(DcMotor.Direction.FORWARD);
+            fr.setDirection(DcMotor.Direction.REVERSE);
+            br.setDirection(DcMotor.Direction.REVERSE);
+            fl.setDirection(DcMotor.Direction.FORWARD);
+            bl.setDirection(DcMotor.Direction.FORWARD);
         }
     }
 
