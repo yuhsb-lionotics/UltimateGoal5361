@@ -37,8 +37,8 @@ public class Auto extends DriveTrain {
         arm.setDirection(DcMotor.Direction.FORWARD); */
     }
     public void flRotate(double power){
-        fr.setPower(-power);
-        bl.setPower(power);
+        fr.setPower(-power/2);
+        bl.setPower(power/2);
         br.setPower(-power);
         sleep(10000);
         fr.setPower(0);
