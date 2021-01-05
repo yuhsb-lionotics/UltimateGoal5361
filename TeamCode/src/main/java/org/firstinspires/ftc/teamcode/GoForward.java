@@ -16,7 +16,7 @@ public class GoForward extends DriveTrain {
 
         telemetry.addData("Status:", "Running");
         telemetry.update();
-        encoderDriveForward(0.7,12,15);
+        encoderDriveForward(0.7,36,10);
 
     }
 }
