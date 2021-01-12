@@ -20,7 +20,13 @@ public class Auto extends DriveTrain {
         telemetry.addData("Status:", "Running");
         telemetry.update();
         //driving commands here
-        flRotate(1);
+        encoderDriveForward(0.7,42,10);
+        char targetSquare=detectRings();
+        switch(targetSquare) {
+            case 'A':
+                break;
+        }
+
     }
     private void setup(){
         telemetry.addData("Status", "Initializing");
@@ -44,7 +50,11 @@ public class Auto extends DriveTrain {
         fr.setPower(0);
         bl.setPower(0);
         br.setPower(0);
-        }
+    }
+
+    public char detectRings() {
+        return 'A';
+    }
 }
 
 

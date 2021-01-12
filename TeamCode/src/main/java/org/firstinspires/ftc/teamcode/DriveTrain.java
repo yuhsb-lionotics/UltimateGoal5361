@@ -13,11 +13,11 @@ public class DriveTrain extends LinearOpMode {
 
     public boolean getIsBlueAlliance() {return true;} //Set to false if red alliance
 
-    private static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
+    private static final double COUNTS_PER_MOTOR_REV = 1680;    // eg: TETRIX Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+            (WHEEL_DIAMETER_INCHES * Math.PI);
 
     @Override
     public void runOpMode() {
@@ -46,6 +46,11 @@ public class DriveTrain extends LinearOpMode {
             fl.setDirection(DcMotor.Direction.FORWARD);
             bl.setDirection(DcMotor.Direction.FORWARD);
         }
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public void rotateClockwise(double power) {

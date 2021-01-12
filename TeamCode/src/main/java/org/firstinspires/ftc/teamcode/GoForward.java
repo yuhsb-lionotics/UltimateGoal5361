@@ -11,12 +11,15 @@ public class GoForward extends DriveTrain {
         driveTrainSetup();
 
         telemetry.addData("Status:","Initialized");
+        telemetry.addData("FL Stop mode", fl.getZeroPowerBehavior());
+        telemetry.addData("FR Stop mode", fr.getZeroPowerBehavior());
         telemetry.update();
         waitForStart();
 
         telemetry.addData("Status:", "Running");
         telemetry.update();
-        encoderDriveForward(0.7,36,10);
+        encoderDriveForward(0.7,42,10);
+        //encoderDrive(1,1,1,1,16*Math.PI, 15);
 
     }
 }
