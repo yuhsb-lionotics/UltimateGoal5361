@@ -91,16 +91,13 @@ public class DriveTrain extends LinearOpMode {
     public void encoderStrafe(double maxPower, //0 <= maxPower <= 1
                               double forwardLeftInches, double forwardRightInches, // + or -
                               double timeoutS) {
-        double largestInches = Math.max(Math.abs(forwardLeftInches), Math.abs(forwardRightInches));
-        double forwardLeftPower  = maxPower * forwardLeftInches  / largestInches;
-        double forwardRightPower = maxPower * forwardRightInches / largestInches;
-        encoderDrive(forwardLeftPower, forwardRightPower, forwardRightPower, forwardLeftPower, largestInches/maxPower, timeoutS);
+        encoderDrive(maxPower, forwardLeftInches, forwardRightInches, forwardRightInches, forwardLeftInches, timeoutS);
     }
     public void encoderDriveForward(double power, double inches, double timeoutS) {
         encoderStrafe(power, inches/Math.sqrt(2), inches/Math.sqrt(2), timeoutS);
     }
-    protected void encoderDrive(double powerFR, double powerFL, double powerBR, double powerBL,
-                                double maxInches, // >0; how many inches a wheel at full power should go
+    protected void encoderDrive(double maxPower, // Between 0 and 1
+                                double frInches, double flInches, double brInches, double blInches, // + or -
                                 double timeoutS) {
         int newFRTarget;
         int newFLTarget;
@@ -111,10 +108,10 @@ public class DriveTrain extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFRTarget = fr.getCurrentPosition()     + (int) (powerFR*maxInches * COUNTS_PER_INCH);
-            newFLTarget = fl.getCurrentPosition()     + (int) (powerFL*maxInches * COUNTS_PER_INCH);
-            newBLTarget = bl.getCurrentPosition()     + (int) (powerBL*maxInches * COUNTS_PER_INCH);
-            newBRTarget = br.getCurrentPosition()     + (int) (powerBR*maxInches * COUNTS_PER_INCH);
+            newFRTarget = fr.getCurrentPosition()     + (int) (frInches * COUNTS_PER_INCH);
+            newFLTarget = fl.getCurrentPosition()     + (int) (flInches * COUNTS_PER_INCH);
+            newBLTarget = bl.getCurrentPosition()     + (int) (blInches * COUNTS_PER_INCH);
+            newBRTarget = br.getCurrentPosition()     + (int) (brInches * COUNTS_PER_INCH);
 
             fr.setTargetPosition(newFRTarget);
             fl.setTargetPosition(newFLTarget);
@@ -127,10 +124,18 @@ public class DriveTrain extends LinearOpMode {
             bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+            //Determine wheel powers
+            double maxInches = Math.max( Math.max(Math.abs(frInches), Math.abs(flInches)) ,
+                                         Math.max(Math.abs(brInches), Math.abs(blInches)) );
+            double powerFR = maxPower * frInches / maxInches;
+            double powerFL = maxPower * flInches / maxInches;
+            double powerBR = maxPower * brInches / maxInches;
+            double powerBL = maxPower * blInches / maxInches;
+
             // reset the timeout time and start motion.
             runtime.reset();
             fr.setPower(Math.abs(powerFR));
-            fl.setPower(Math.abs(powerBL));
+            fl.setPower(Math.abs(powerFL));
             bl.setPower(Math.abs(powerBL));
             br.setPower(Math.abs(powerBR));
 
