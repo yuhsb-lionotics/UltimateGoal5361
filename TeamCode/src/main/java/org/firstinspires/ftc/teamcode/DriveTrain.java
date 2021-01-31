@@ -25,6 +25,7 @@ public class DriveTrain extends LinearOpMode {
     }
 
     public void driveTrainSetup(){
+        //Initialize motors and set directions
         if(getIsBlueAlliance()) {
             fl = hardwareMap.dcMotor.get("Fl");
             bl = hardwareMap.dcMotor.get("Bl");
@@ -35,7 +36,7 @@ public class DriveTrain extends LinearOpMode {
             bl.setDirection(DcMotor.Direction.REVERSE);
             fr.setDirection(DcMotor.Direction.FORWARD);
             br.setDirection(DcMotor.Direction.FORWARD);
-        } else {
+        } else { //Mirror image for red alliance
             fr = hardwareMap.dcMotor.get("Fl");
             br = hardwareMap.dcMotor.get("Bl");
             fl = hardwareMap.dcMotor.get("Fr");
@@ -46,11 +47,11 @@ public class DriveTrain extends LinearOpMode {
             fl.setDirection(DcMotor.Direction.FORWARD);
             bl.setDirection(DcMotor.Direction.FORWARD);
         }
+        //Set motors to brake whenever they are stopped
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
     }
 
     public void rotateClockwise(double power) {
@@ -96,7 +97,14 @@ public class DriveTrain extends LinearOpMode {
     public void encoderDriveForward(double power, double inches, double timeoutS) {
         encoderStrafe(power, inches/Math.sqrt(2), inches/Math.sqrt(2), timeoutS);
     }
-    protected void encoderDrive(double maxPower, // Between 0 and 1
+
+    //Set each motor to drive a certain distance.
+    //maxPower is the greatest absolute value of the power for any of the motors.
+    //frInches, etc. can be positive or negative, but not 0.
+    //timeoutS is the maximum number of seconds to run the OpMode before a hard stop.
+    //The point is to avoid an infinite loop.
+    //It should be much higher than the actual length of time it should take, e.g. 10.
+    protected void encoderDrive(double maxPower, // 0 < maxPower <= 1
                                 double frInches, double flInches, double brInches, double blInches, // + or -
                                 double timeoutS) {
         int newFRTarget;
@@ -125,6 +133,7 @@ public class DriveTrain extends LinearOpMode {
             br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             //Determine wheel powers
+            //Power for each wheel is proportional to the maximum power and distance travelled
             double maxInches = Math.max( Math.max(Math.abs(frInches), Math.abs(flInches)) ,
                                          Math.max(Math.abs(brInches), Math.abs(blInches)) );
             double powerFR = maxPower * frInches / maxInches;
@@ -140,10 +149,10 @@ public class DriveTrain extends LinearOpMode {
             br.setPower(Math.abs(powerBR));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER/ANY motor hits
             // its target position, the motion will stop.  This is "safer" in the event that the robot will
             // always end the motion as soon as possible.
-            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // However, if you require that BOTH/ALL motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
@@ -157,9 +166,9 @@ public class DriveTrain extends LinearOpMode {
                         motorFL.getCurrentPosition(),
                         motorBL.getCurrentPosition(),
                         motorBR.getCurrentPosition(),
-						strafeMotor.getCurrentPosition()); */
+                        strafeMotor.getCurrentPosition()); */
             }
-
+            //Display the time elapsed
             telemetry.addData("Encoder Drive", "Finished in %.2f s/%f", runtime.seconds(), timeoutS);
             telemetry.update();
 
