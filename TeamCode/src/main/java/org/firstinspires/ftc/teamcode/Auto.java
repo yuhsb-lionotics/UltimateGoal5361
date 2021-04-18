@@ -1,61 +1,50 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import androidx.annotation.NonNull;
 
 @Autonomous(name = "Autonomous")
 public class Auto extends DriveTrain {
-    DcMotor leftLauncherWheel, rightLauncherWheel, arm;
-    CRServo conveyorBelt;
+    // 3 boxes, 24 inches each = 72 inches
+    // + 6 inches from robot to end of the square = 78 inches
+    // + 12 inches (half of a square, to get wobble goal all the way in) = 90 inches
+    private static final int DISTANCE_TO_WOBBLE_GOAL_DESTINATION = 90;
+    private static final double MAX_POWER = 1.0;
+    private static final double DEFAULT_POWER = 1.0;
+
+    private void telemetryUpdateStatus(final @NonNull String status) {
+        telemetry.addData("Status:", status);
+        telemetry.update();
+    }
+
+    private void moveWobbleGoal() {
+        encoderDriveForward(DEFAULT_POWER, DISTANCE_TO_WOBBLE_GOAL_DESTINATION,30);
+        encoderDriveForward(
+                MAX_POWER,
+                -9, // to make robot back up and touch blue line
+                10
+        );
+    }
 
     @Override
     public void runOpMode() {
-        setup();
-        telemetry.addData("Status:","Initialized");
-        telemetry.update();
-        waitForStart();
-        telemetry.addData("Status:", "Running");
-        telemetry.update();
-        //driving commands here
-        encoderDriveForward(0.5,78,14);
-        encoderDriveForward(0.5,-7,10);
-        /* encoderDriveForward(0.7,42,10);
-        char targetSquare=detectRings();
-        switch(targetSquare) {
-            case 'A':
-                break;
-        }*/
-
-    }
-    private void setup(){
-        telemetry.addData("Status", "Initializing");
-        telemetry.update();
         driveTrainSetup();
-        /*
-        leftLauncherWheel = hardwareMap.dcMotor.get("left launcher wheel");
-        rightLauncherWheel = hardwareMap.dcMotor.get("right launcher wheel");
-        conveyorBelt = hardwareMap.crservo.get("conveyor belt");
-        arm = hardwareMap.dcMotor.get("arm");
-        leftLauncherWheel.setDirection(DcMotor.Direction.FORWARD);
-        rightLauncherWheel.setDirection(DcMotor.Direction.REVERSE);
-        conveyorBelt.setDirection(DcMotorSimple.Direction.FORWARD);
-        arm.setDirection(DcMotor.Direction.FORWARD); */
-    }
-    public void flRotate(double power){
-        fr.setPower(-power/2);
-        bl.setPower(power/2);
-        br.setPower(-power);
-        sleep(10000);
-        fr.setPower(0);
-        bl.setPower(0);
-        br.setPower(0);
+        waitForStart();
+
+        telemetryUpdateStatus("Running");
+
+        moveWobbleGoal();
     }
 
-    public char detectRings() {
-        return 'A';
+
+    @Override
+    public void driveTrainSetup() {
+        telemetryUpdateStatus("Initializing");
+
+        super.driveTrainSetup();
+
+        telemetryUpdateStatus("Initialized");
     }
 }
 
