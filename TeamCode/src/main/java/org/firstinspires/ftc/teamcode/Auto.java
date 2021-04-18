@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@Autonomous(name = "blue autonomous")
+@Autonomous(name = "Autonomous")
 public class Auto extends DriveTrain {
     DcMotor leftLauncherWheel, rightLauncherWheel, arm;
     CRServo conveyorBelt;
@@ -20,12 +20,14 @@ public class Auto extends DriveTrain {
         telemetry.addData("Status:", "Running");
         telemetry.update();
         //driving commands here
-        encoderDriveForward(0.7,42,10);
+        encoderDriveForward(0.5,78,14);
+        encoderDriveForward(0.5,-7,10);
+        /* encoderDriveForward(0.7,42,10);
         char targetSquare=detectRings();
         switch(targetSquare) {
             case 'A':
                 break;
-        }
+        }*/
 
     }
     private void setup(){

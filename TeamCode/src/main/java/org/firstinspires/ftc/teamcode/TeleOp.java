@@ -22,14 +22,15 @@ public class TeleOp extends DriveTrain {
              telemetry.addData("Joystick x",gamepad1.left_stick_x);
              telemetry.addData("Joystick y", gamepad1.left_stick_y);
              telemetry.update();
-
+             tankControl(0.7);
+             /*
              //Rotate coordinates by a 45 degree angle
              double forwardRightPower
                      = ( gamepad1.right_stick_x - gamepad1.right_stick_y)/Math.sqrt(2);
              double forwardLeftPower
                      = (-gamepad1.right_stick_x - gamepad1.right_stick_y)/Math.sqrt(2);
              //Strafe in the direction of the left joystick
-            strafe(forwardLeftPower, forwardRightPower);
+            strafe(forwardLeftPower, forwardRightPower);*/
         }
     }
     public void setup(){
