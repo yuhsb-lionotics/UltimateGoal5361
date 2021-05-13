@@ -14,7 +14,7 @@ This document explains how and why to use certain formulas to control a robot wi
 The robot is rigid, and therefore, it can only move in a combination of rigid motions: translation,
  rotation, and reflection. Although 13475's robot is bound to undergo a reflection during the
  competition, that would never happen to 5361. Therefore, the robot has three degrees of freedom:
- two dimensions of translation (x and y) and one dimension of rotation (z).
+ two dimensions of translation (x and y) and one dimension of rotation about the center (z).
 
 This means that in almost all cases, the motion of any three omni/mecanum wheels of a robot
  completely determines its motion. The robot could theoretically have only three omniwheels, like
@@ -109,3 +109,48 @@ square corresponding to faster speeds will not be covered.
 
 *** ANOTHER APPROACH ***
 
+Any rigid motion that preserves orientation is either a translation or a rotation. We already know
+how to code translation easily using the previous approach. However, for autonomous, it would be
+useful to have a method to rotate the robot by a given angle about an arbitrary point. Or,
+equivalently, for the robot to travel a certain distance, in a certain direction with respect to
+the robot, with a certain constant curvature.
+
+To calculate the necessary powers for the latter method, we calculate the translational components
+as above. The curvature is the inverse of the radius, which in turn is proportional to the
+circumference of the circle of rotation. The robot needs to rotate a full turn about its center
+in the time it takes to travel the circumference of the circle.
+*
+The amount of time to travel the circumference of the circle is exactly the amount of time it would
+take to travel the distance of the circumference of the circle if we took out the rotation-about-
+the-center component of its motion. To see why this is true precisely,* consider what happens when
+we add two motions together (i.e. add the powers from each of two motions to each individual wheel).
+For example, if we combine a left motion and a forward motion of 1 foot each, we get a diagonal
+motion of sqrt(2) feet. However, if we add a certain motion to both the robot and the frame of
+reference, nothing changes. For example, there is no difference between me standing still and the
+robot moving one foot to the left, or me moving one foot forward and the robot moving sqrt(2) feet
+forward-left. In both cases, I see the robot moving one foot to the left. The same idea applies to
+rotation. If I stand still and the robot moves forward a distance
+
+
+
+
+*The amount of time to travel the circumference of the circle is exactly the amount of time it would
+take to travel the distance of the circumference of the circle if we took out the rotation-about-
+the-center component of its motion. To see why this is true precisely, let the circumference of the
+circle be c, and let n be an integer >1. Let the robot move translationally for a distance of c/n
+in the initial direction of our desired path. Then let it rotate by an angle of 2π/n radians. The
+composite motion must be a rotation of 2π/n about some point in space; furthermore, this point has
+not moved relative to the robot. If we do the translation+rotation again, the robot will rotate
+another 2π/n about the same point. If we do the translation+rotation a total of n times, the robot
+will have traced an EXACT circle, and it will have traveled a distance c. The robot will end up
+back where it started, because the total motion was a rotation of 2π.
+As we let n approach infinity, the distance the robot travels in its polygonal path will approach
+the circumference of the circle its path traces. This circle must be the actual path we want for the
+robot, because it is the only circle with circumference c and the desired initial direction. Oops,
+I just realized after finishing this that the entire argument I made ignores time, so it doesn't
+actually prove what I wanted. This proof doesn't work.
+
+Footnote: we are dealing with two different but related concepts here. One is rigid motions,
+which can be composed one after the other. The other is velocity fields (which are vector fields),
+which can be added. The latter is the derivative of the former. Both are implemented in our code
+(motions with encoderDrive(), velocity fields with power).
