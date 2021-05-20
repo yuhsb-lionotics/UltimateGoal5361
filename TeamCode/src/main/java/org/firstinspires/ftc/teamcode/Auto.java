@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 @Autonomous(name = "Autonomous")
 public class Auto extends DriveTrain {
+    
     // 3 boxes, 24 inches each = 72 inches
     // + 6 inches from robot to end of the square = 78 inches
     // + 12 inches (half of a square, to get wobble goal all the way in) = 90 inches
