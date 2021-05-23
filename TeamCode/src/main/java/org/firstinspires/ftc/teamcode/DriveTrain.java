@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+//In future years, this class should be instead called Hardware, and include all hardware
+//components.
 public class DriveTrain extends LinearOpMode {
     protected DcMotor frontLeft, backLeft, frontRight, backRight;
     private ElapsedTime runtime = new ElapsedTime();
@@ -73,7 +75,8 @@ public class DriveTrain extends LinearOpMode {
     public void tankControl(double maxPower) { // 0 < maxPower <= 1
         double leftPower = -gamepad1.left_stick_y * maxPower;
         double rightPower = -gamepad1.right_stick_y * maxPower;
-        double strafePower = (gamepad1.right_trigger - gamepad1.left_trigger) * maxPower; //positive is to the right
+        double strafePower = gamepad1.right_stick_x * maxPower;
+        //double strafePower = (gamepad1.right_trigger - gamepad1.left_trigger) * maxPower; //positive is to the right
         
         double strafePowerLimit = Math.min(1 - Math.abs(rightPower) , 1 - Math.abs(leftPower));
         strafePower = Range.clip(strafePower, -strafePowerLimit, strafePowerLimit);
