@@ -25,13 +25,16 @@ public class Auto extends DriveTrain {
 
 
         turnArm(0.2, 0.2, 6); //down
+        driveForward(-0.7);
+        sleep(500);
+        driveForward(0);
 
-        encoderDriveForward(DEFAULT_POWER, DISTANCE_TO_WOBBLE_GOAL_DESTINATION,15);
+        /* encoderDriveForward(DEFAULT_POWER, DISTANCE_TO_WOBBLE_GOAL_DESTINATION,15);
         encoderDriveForward(
                 DEFAULT_POWER,
                 -9, // to make robot back up and touch blue line
                 10
-        );
+        ); */
 
 
         /*
