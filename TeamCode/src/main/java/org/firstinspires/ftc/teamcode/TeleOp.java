@@ -27,14 +27,14 @@ public class TeleOp extends DriveTrain {
 
              //Drive wheels - the DPad is for approaching the goal to pick it up
              if(gamepad1.dpad_up){
-                 driveForward(0.3);
+                 driveForward(0.25);
              } else if (gamepad1.dpad_down) {
-                 driveForward(-0.3);
+                 driveForward(-0.25);
              } else if (gamepad1.dpad_right) {
-                 strafeRight(0.3);
+                 strafeRight(0.25);
              } else if (gamepad1.dpad_left) {
-                 strafeRight(-0.3);
-             } else { tankControl(0.7); }
+                 strafeRight(-0.25);
+             } else { tankControl(0.5); }
 
              //Goal arm control
             if (gamepad1.left_bumper) {
@@ -44,7 +44,7 @@ public class TeleOp extends DriveTrain {
                 turnArm(0.29,0.4,6);
             } else {
                 //Manual control
-                double armPower = 0.5 * (gamepad1.right_trigger-gamepad1.left_trigger);
+                double armPower = 0.5 * (gamepad1.right_trigger - gamepad1.left_trigger);
                 goalArm.setPower(armPower);
             }
 
