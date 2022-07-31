@@ -66,7 +66,7 @@ powerBR = forward + right - rotateClockwise
 powerBL = forward - right + rotateClockwise
 
 We can combine these equations to give:
-powerFL + powerFR = powerBL + powerBR.
+powerFL + powerFR = powerBL + powerBR. <---- #*#*# THE HOLONOMIC EQUATION #*#*#
 This means that for the robot not to slip, it has to have a consistent forward/backward speed.
 There's nothing special about the forward direction. We can rearrange the above equation as
 powerFL - powerBL = powerBR - powerFR.
@@ -107,7 +107,8 @@ between speed and precision. However, if we don't want to be able to move as fas
 can make the "octagon" smaller than the square so that it fits inside, and the outer edges of the
 square corresponding to faster speeds will not be covered.
 
-*** ANOTHER APPROACH ***
+*** ANOTHER APPROACH *** (This is unfinished. Trial and error, taking into account the holonomic
+equation whose name I made up, is probably the best way of coding more complicated motion.)
 
 Any rigid motion that preserves orientation is either a translation or a rotation. We already know
 how to code translation easily using the previous approach. However, for autonomous, it would be
